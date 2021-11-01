@@ -1,6 +1,7 @@
 package com.safetynetalert.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ public class FireStationServiceImpl implements IFireStationService {
 	private IFireStationDAO fireStationDAO;
 	
 	@Override
-	public List<FireStation> list() {
-		return this.fireStationDAO.list();
+	public List<FireStation> getFireStations() {
+		return this.fireStationDAO.getFireStations();
 	}
 
 	@Override
@@ -30,8 +31,8 @@ public class FireStationServiceImpl implements IFireStationService {
 	}
 
 	@Override
-	public boolean delete(String address, String station) {
-		return this.fireStationDAO.delete(address, station);
+	public boolean delete(final FireStation fireStation) {
+		return this.fireStationDAO.delete(fireStation);
 	}
 
 }

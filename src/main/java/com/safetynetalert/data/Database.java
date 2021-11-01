@@ -1,6 +1,7 @@
 package com.safetynetalert.data;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 import com.safetynetalert.model.FireStation;
@@ -12,12 +13,6 @@ public class Database {
 	private List<Person> lPerson;
 	private List<FireStation> lFireStation;
 	private List<MedicalRecord> lMedicalRecord;
-
-	public Database() {
-		this.lPerson = null;
-		this.lFireStation = null;
-		this.lMedicalRecord = null;
-	}
 
 	public void loadData(String dataFile) {
 		PersonLoader personLoader = new PersonLoader();

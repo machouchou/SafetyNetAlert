@@ -16,7 +16,7 @@ public class MedicalRecordServiceImpl implements IMedicalRecordService{
 	
 	@Override
 	public List<MedicalRecord> list() {
-		return this.medicalRecordDAO.list();
+		return this.medicalRecordDAO.getMedicalRecordList();
 	}
 
 	@Override

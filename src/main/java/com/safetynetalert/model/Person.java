@@ -13,18 +13,6 @@ public class Person {
 	private MedicalRecord medicalRecord;
 	
 	/**
-	 * @return the medicalRecord
-	 */
-	public MedicalRecord getMedicalRecord() {
-		return medicalRecord;
-	}
-	/**
-	 * @param medicalRecord the medicalRecord to set
-	 */
-	public void setMedicalRecord(MedicalRecord medicalRecord) {
-		this.medicalRecord = medicalRecord;
-	}
-	/**
 	 * @param firstName
 	 * @param lastName
 	 * @param address
@@ -43,6 +31,18 @@ public class Person {
 		this.zip = zip;
 		this.phone = phone;
 		this.email = email;
+	}
+	/**
+	 * @return the medicalRecord
+	 */
+	public MedicalRecord getMedicalRecord() {
+		return medicalRecord;
+	}
+	/**
+	 * @param medicalRecord the medicalRecord to set
+	 */
+	public void setMedicalRecord(MedicalRecord medicalRecord) {
+		this.medicalRecord = medicalRecord;
 	}
 	/**
 	 * @return the firstName

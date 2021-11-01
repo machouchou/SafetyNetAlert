@@ -4,6 +4,7 @@
 package com.safetynetalert.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.safetynetalert.model.FireStation;
 
@@ -13,12 +14,12 @@ import com.safetynetalert.model.FireStation;
  */
 public interface IFireStationService {
 
-	public List<FireStation> list();
+	public List<FireStation> getFireStations();
 
 	public boolean insert(final FireStation fireStation);
 
 	public boolean update(final FireStation fireStation);
 
-	public boolean delete(final String address, final String station);
+	public boolean delete(final FireStation fireStation);
 
 }

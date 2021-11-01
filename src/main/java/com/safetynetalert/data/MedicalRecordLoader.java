@@ -50,7 +50,6 @@ public class MedicalRecordLoader {
 				lMedicalRecord.add(medicalRecord);
 			}
 		} catch (Exception ex) {
-			System.out.println(ex.toString());
 		}
 
 		return lMedicalRecord;
