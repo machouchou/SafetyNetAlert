@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safetynetalert.dto.ChildDto;
 import com.safetynetalert.dto.ListPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.Person;
 import com.safetynetalert.service.IPersonService;
 
@@ -47,5 +49,9 @@ public class PersonController {
 	@GetMapping("firestation")
 	public ListPersonDto listPersonCoveredByStationNumber(@RequestParam final String stationNumber) {
 		return this.personService.getPersonsCoveredByStationNumber(stationNumber);
+	}
+	@GetMapping("childAlert")
+	public PersonsAtAddressDto listChildLivingAtAddress(@RequestParam final String address) {
+	return this.personService.getChildrenLivingAtAddress(address);
 	}
 }

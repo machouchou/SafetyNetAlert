@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import com.safetynetalert.dao.IPersonDAO;
 import com.safetynetalert.dao.JSONFireStationDAO;
 import com.safetynetalert.dao.JSONMedicalRecordDAO;
+import com.safetynetalert.dto.ChildDto;
 import com.safetynetalert.dto.ListPersonDto;
+import com.safetynetalert.dto.OtherPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
 
@@ -22,7 +25,7 @@ import com.safetynetalert.model.Person;
 public class PersonServiceImpl implements IPersonService {
 
 	@Autowired
-	private IPersonDAO personDAO;
+	private IPersonDAO personDao;
 
 	@Autowired
 	private JSONFireStationDAO fireStationDao;
@@ -32,22 +35,22 @@ public class PersonServiceImpl implements IPersonService {
 
 	@Override
 	public List<Person> list() {
-		return this.personDAO.getPersonList();
+		return this.personDao.getPersonList();
 	}
 
 	@Override
 	public boolean insert(Person person) {
-		return this.personDAO.insert(person);
+		return this.personDao.insert(person);
 	}
 
 	@Override
 	public boolean update(Person person) {
-		return this.personDAO.update(person);
+		return this.personDao.update(person);
 	}
 
 	@Override
 	public boolean delete(String lastname, String firstname) {
-		return this.personDAO.delete(lastname, firstname);
+		return this.personDao.delete(lastname, firstname);
 	}
 
 	@Override
@@ -67,11 +70,11 @@ public class PersonServiceImpl implements IPersonService {
 					
 					// Convertir birthDate récupérée sous forme de string en objet de type Date
 					String birthDateAsString = person.getMedicalRecord().getBirthDate();
-					DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+					
 					try {
-						int age = calculatePersonAge(birthDateAsString, formatter);
+						int age = calculatePersonAge(birthDateAsString);
 					    
-					    isAdult(listPersonDto, age);
+					    setMinorOrAdultNumber(listPersonDto, age);
 					    					    
 					    listPersonDto.getListPersonDto().add(personDto);
 					} catch (ParseException e) {
@@ -84,20 +87,60 @@ public class PersonServiceImpl implements IPersonService {
 		return listPersonDto;
 	}
 
-	private void isAdult(ListPersonDto listPersonDto, int age) {
+	private void setMinorOrAdultNumber(ListPersonDto listPersonDto, int age) {
 		if (age < 18) {
 			listPersonDto.setNbChildren(listPersonDto.getNbChildren() + 1);
 		} else {
 			listPersonDto.setNbAdults(listPersonDto.getNbAdults() + 1);
 		}
 	}
+	
+	private boolean isChild(Person person) {
+				
+		try {
+			int personAge = calculatePersonAge(person.getMedicalRecord().getBirthDate());
+			person.setAge(personAge);
+			
+			if (person.getAge() <= 18) {
+				return true;
+			}
+		
+		} catch (ParseException e) {
+			// Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 
-	private int calculatePersonAge(String birthDateAsString, DateFormat formatter) throws ParseException {
+	private int calculatePersonAge(String birthDateAsString) throws ParseException {
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Calendar birthDate = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris")); 
 		birthDate.setTime(formatter.parse(birthDateAsString));
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-	
+			
 		return today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+	}
+
+	@Override
+	public PersonsAtAddressDto getChildrenLivingAtAddress(String address) {
+		List<Person> personsAtSameAddress = personDao.getListPersonsByAddress(address);
+		List<ChildDto> listChildrenDto = new ArrayList<>();
+		List<OtherPersonDto> listOtherPersons = new ArrayList<>();
+		
+		for (Person  person : personsAtSameAddress) {
+			person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName(person.getFirstName(), person.getLastName()));
+	
+			if (isChild(person)) {
+				ChildDto childDto = new ChildDto(person.getFirstName(), person.getLastName(), person.getAge());
+				listChildrenDto.add(childDto);
+			} else {
+				OtherPersonDto otherPersonDto = new OtherPersonDto(person.getFirstName(), person.getLastName());
+				listOtherPersons.add(otherPersonDto);
+			}
+		}
+		
+		return new PersonsAtAddressDto(listChildrenDto, listOtherPersons);
 	}
 
 }

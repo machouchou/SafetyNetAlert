@@ -1,7 +1,5 @@
 package com.safetynetalert.dto;
 
-import com.safetynetalert.model.MedicalRecord;
-
 public class PersonDto {
 	private String firstName;
 	private String lastName;
@@ -14,8 +12,6 @@ public class PersonDto {
 	 * @param lastName
 	 * @param address
 	 * @param phone
-	 * @param nbAdults
-	 * @param nbChildren
 	 */
 	public PersonDto(String firstName, String lastName, String address, String phone) {
 		super();

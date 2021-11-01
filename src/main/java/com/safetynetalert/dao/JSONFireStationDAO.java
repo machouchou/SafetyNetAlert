@@ -30,14 +30,13 @@ public class JSONFireStationDAO implements IFireStationDAO {
 	
 	@Override
 	public List<FireStation> getFireStations(String stationNumber) {
-		// Auto-generated method stub
 		return database.getlFireStation().stream()
         .filter(fireStation -> fireStation.getStation().equals(stationNumber))
         .distinct()
         .collect(Collectors.toList());
 	}
-
-	@Override
+	
+	@Override 
 	public boolean insert(final FireStation fireStation) {
 		for (FireStation existingFireStation : getFireStations()) {
 			if (existingFireStation.getAddress().equalsIgnoreCase(fireStation.getAddress())
@@ -78,8 +77,5 @@ public class JSONFireStationDAO implements IFireStationDAO {
 		
 		return false;
 	}
-
-	
-	
 
 }

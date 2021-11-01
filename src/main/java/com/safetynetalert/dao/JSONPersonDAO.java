@@ -1,11 +1,13 @@
 package com.safetynetalert.dao;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.safetynetalert.data.Database;
+import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
 
 @Repository
@@ -19,6 +21,14 @@ public class JSONPersonDAO implements IPersonDAO {
 		return database.getlPerson();
 	}
 
+	@Override
+	public List<Person> getListPersonsByAddress(String address) {
+		return database.getlPerson().stream()
+		.filter(person -> person.getAddress().equals(address))
+		//.distinct()
+		.collect(Collectors.toList());
+	}
+	
 	@Override
 	public boolean insert(final Person person) {
 		return database.getlPerson().add(person);
@@ -68,5 +78,4 @@ public class JSONPersonDAO implements IPersonDAO {
 		
 		return false;
 	}
-
 }

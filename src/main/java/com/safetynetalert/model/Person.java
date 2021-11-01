@@ -11,7 +11,14 @@ public class Person {
 	private String phone;
 	private String email;
 	private MedicalRecord medicalRecord;
+	private int age;
 	
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
 	/**
 	 * @param firstName
 	 * @param lastName

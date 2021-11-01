@@ -13,4 +13,6 @@ public interface IPersonDAO {
 	public boolean update(final Person person);
 	
 	public boolean delete(final String lastname, final String firstname);
+
+	public List<Person> getListPersonsByAddress(final String address);
 }

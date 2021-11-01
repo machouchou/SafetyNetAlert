@@ -34,6 +34,15 @@ public class JSONMedicalRecordDAO implements IMedicalRecordDAO{
 				.findFirst()
 				.orElse(null);
 	}
+	
+	@Override
+	public MedicalRecord getMedicalRecordBasedOnFirstAndLastName1(String firstName, String lastName) {
+		return database.getlMedicalRecord()
+				.stream()
+				.filter(medicalRecord -> medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName))
+				.findFirst()
+				.orElse(null);
+	}
 
 	@Override
 	public boolean insert(final MedicalRecord medicalRecord) {
