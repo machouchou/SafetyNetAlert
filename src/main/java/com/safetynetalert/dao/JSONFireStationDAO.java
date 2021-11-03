@@ -35,7 +35,6 @@ public class JSONFireStationDAO implements IFireStationDAO {
         .distinct()
         .collect(Collectors.toList());
 	}
-	
 	@Override 
 	public boolean insert(final FireStation fireStation) {
 		for (FireStation existingFireStation : getFireStations()) {
@@ -77,5 +76,4 @@ public class JSONFireStationDAO implements IFireStationDAO {
 		
 		return false;
 	}
-
 }

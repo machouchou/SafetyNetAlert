@@ -1,6 +1,7 @@
 package com.safetynetalert.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynetalert.dto.ChildDto;
+import com.safetynetalert.dto.ListPersonPhoneNumberDto;
 import com.safetynetalert.dto.ListPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.Person;
 import com.safetynetalert.service.IPersonService;
@@ -52,6 +55,10 @@ public class PersonController {
 	}
 	@GetMapping("childAlert")
 	public PersonsAtAddressDto listChildLivingAtAddress(@RequestParam final String address) {
-	return this.personService.getChildrenLivingAtAddress(address);
+		return this.personService.getChildrenLivingAtAddress(address);
+	}
+	@GetMapping("phoneAlert")
+	public List<PersonPhoneDto> listPersonPhoneNumberByStation(@RequestParam final String firestation) {
+		return this.personService.getPersonsPhoneNumberByStation(firestation);
 	}
 }

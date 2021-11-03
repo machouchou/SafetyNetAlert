@@ -1,9 +1,10 @@
 package com.safetynetalert.service;
 
 import java.util.List;
+import java.util.Set;
 
-import com.safetynetalert.dto.ChildDto;
 import com.safetynetalert.dto.ListPersonDto;
+import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.Person;
 
@@ -20,5 +21,7 @@ public interface IPersonService {
 	public ListPersonDto getPersonsCoveredByStationNumber(final String stationNumber);
 
 	public PersonsAtAddressDto getChildrenLivingAtAddress(final String address);
+
+	public List<PersonPhoneDto> getPersonsPhoneNumberByStation(final String stationNumber);
 
 }

@@ -28,7 +28,7 @@ public class JSONPersonDAO implements IPersonDAO {
 		//.distinct()
 		.collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public boolean insert(final Person person) {
 		return database.getlPerson().add(person);
@@ -78,4 +78,5 @@ public class JSONPersonDAO implements IPersonDAO {
 		
 		return false;
 	}
+
 }

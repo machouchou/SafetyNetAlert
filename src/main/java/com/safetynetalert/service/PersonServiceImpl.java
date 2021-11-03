@@ -5,7 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,10 @@ import com.safetynetalert.dao.JSONFireStationDAO;
 import com.safetynetalert.dao.JSONMedicalRecordDAO;
 import com.safetynetalert.dto.ChildDto;
 import com.safetynetalert.dto.ListPersonDto;
+import com.safetynetalert.dto.ListPersonPhoneNumberDto;
 import com.safetynetalert.dto.OtherPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
@@ -141,6 +145,31 @@ public class PersonServiceImpl implements IPersonService {
 		}
 		
 		return new PersonsAtAddressDto(listChildrenDto, listOtherPersons);
+	}
+
+
+	@Override
+	public List<PersonPhoneDto> getPersonsPhoneNumberByStation(String stationNumber) {
+		
+		List<FireStation> fireStationsByNumber = fireStationDao.getFireStations(stationNumber);
+				
+		List<Person> persons = new ArrayList<>();
+		List<PersonPhoneDto> phoneNumbersCoveredBySameStationNumber = new ArrayList<>();
+		
+		for (FireStation fireStation : fireStationsByNumber) {
+			String address = fireStation.getAddress();
+			persons.addAll(personDao.getListPersonsByAddress(address));
+		}
+		for (Person person : persons) {
+			// phoneNumbersCoveredBySameStationNumber.add(person.getFirstName(); + " " + person.getLastName() + " : " + person.getPhone());
+			PersonPhoneDto personPhoneDto = new PersonPhoneDto(person.getFirstName(), person.getLastName(), person.getPhone());
+			/*phoneNumbersCoveredBySameStationNumber.add(person.getFirstName());
+			phoneNumbersCoveredBySameStationNumber.add(person.getLastName());
+			phoneNumbersCoveredBySameStationNumber.add(person.getPhone());*/
+			phoneNumbersCoveredBySameStationNumber.add(personPhoneDto);
+		}
+		
+		return phoneNumbersCoveredBySameStationNumber;
 	}
 
 }

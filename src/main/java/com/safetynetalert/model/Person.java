@@ -12,22 +12,9 @@ public class Person {
 	private String email;
 	private MedicalRecord medicalRecord;
 	private int age;
+	private FireStation fireStation;
+	private String station;
 	
-	public int getAge() {
-		return age;
-	}
-	public void setAge(int age) {
-		this.age = age;
-	}
-	/**
-	 * @param firstName
-	 * @param lastName
-	 * @param address
-	 * @param city
-	 * @param zip
-	 * @param phone
-	 * @param email
-	 */
 	public Person(String firstName, String lastName, String address, String city, String zip, String phone,
 			String email) {
 		super();
@@ -39,6 +26,13 @@ public class Person {
 		this.phone = phone;
 		this.email = email;
 	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
 	/**
 	 * @return the medicalRecord
 	 */
@@ -140,6 +134,18 @@ public class Person {
 	public String toString() {
 		return "Person [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", city=" + city
 				+ ", zip=" + zip + ", phone=" + phone + ", email=" + email + "]";
+	}
+	public FireStation getFireStation() {
+		return fireStation;
+	}
+	public void setFireStation(FireStation fireStation) {
+		this.fireStation = fireStation;
+	}
+	public String getStation() {
+		return station;
+	}
+	public void setStation(String station) {
+		this.station = station;
 	}
 	
 	

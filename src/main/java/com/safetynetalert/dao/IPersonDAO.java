@@ -15,4 +15,5 @@ public interface IPersonDAO {
 	public boolean delete(final String lastname, final String firstname);
 
 	public List<Person> getListPersonsByAddress(final String address);
+	
 }
