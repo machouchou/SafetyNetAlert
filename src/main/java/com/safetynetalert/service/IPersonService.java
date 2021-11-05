@@ -26,5 +26,5 @@ public interface IPersonService {
 	public List<PersonPhoneDto> getPersonsPhoneNumberByStation(final String stationNumber);
 
 	public List<PersonLivingAtAddressDto> getPersonsLivingAtAddress(final String address);
-
+	
 }

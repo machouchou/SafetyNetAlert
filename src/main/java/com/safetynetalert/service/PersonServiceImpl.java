@@ -196,14 +196,7 @@ public class PersonServiceImpl implements IPersonService {
 					person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName
 								(person.getFirstName(), person.getLastName()));
 					
-					PersonLivingAtAddressDto personLivingAtAddressDto = new PersonLivingAtAddressDto();
-					personLivingAtAddressDto.setFirstName(person.getFirstName());
-					personLivingAtAddressDto.setLastName(person.getLastName());
-					personLivingAtAddressDto.setPhone(person.getPhone());
-					personLivingAtAddressDto.setStation(person.getFireStation().getStation());
-					personLivingAtAddressDto.setAge(calculatePersonAge(person.getMedicalRecord().getBirthDate()));
-					personLivingAtAddressDto.setMedications(person.getMedicalRecord().getMedications());
-					personLivingAtAddressDto.setAllergies(person.getMedicalRecord().getAllergies());
+					PersonLivingAtAddressDto personLivingAtAddressDto = constructPersonLivingAtAddressDto(person);
 					
 					personsLivingAtAddress.add(personLivingAtAddressDto);
 				}
@@ -214,4 +207,18 @@ public class PersonServiceImpl implements IPersonService {
 			}
 			return personsLivingAtAddress;
 		}
+
+	private PersonLivingAtAddressDto constructPersonLivingAtAddressDto(Person person) throws ParseException {
+		
+		PersonLivingAtAddressDto personLivingAtAddressDto = new PersonLivingAtAddressDto();
+		personLivingAtAddressDto.setFirstName(person.getFirstName());
+		personLivingAtAddressDto.setLastName(person.getLastName());
+		personLivingAtAddressDto.setPhone(person.getPhone());
+		personLivingAtAddressDto.setStation(person.getFireStation().getStation());
+		personLivingAtAddressDto.setAge(calculatePersonAge(person.getMedicalRecord().getBirthDate()));
+		personLivingAtAddressDto.setMedications(person.getMedicalRecord().getMedications());
+		personLivingAtAddressDto.setAllergies(person.getMedicalRecord().getAllergies());
+		
+		return personLivingAtAddressDto;
+	}
 }
