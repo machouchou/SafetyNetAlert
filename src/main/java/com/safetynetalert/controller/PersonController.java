@@ -18,6 +18,7 @@ import com.safetynetalert.dto.ChildDto;
 import com.safetynetalert.dto.ListPersonPhoneNumberDto;
 import com.safetynetalert.dto.ListPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonLivingAtAddressDto;
 import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.Person;
@@ -60,5 +61,9 @@ public class PersonController {
 	@GetMapping("phoneAlert")
 	public List<PersonPhoneDto> listPersonPhoneNumberByStation(@RequestParam final String firestation) {
 		return this.personService.getPersonsPhoneNumberByStation(firestation);
+	}
+	@GetMapping("fire")
+	public List<PersonLivingAtAddressDto> listPersonsLivingAtAddress(@RequestParam final String address) {
+		return this.personService.getPersonsLivingAtAddress(address);
 	}
 }

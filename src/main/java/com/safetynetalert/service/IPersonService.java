@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.safetynetalert.dto.ListPersonDto;
+import com.safetynetalert.dto.PersonLivingAtAddressDto;
 import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.Person;
@@ -23,5 +24,7 @@ public interface IPersonService {
 	public PersonsAtAddressDto getChildrenLivingAtAddress(final String address);
 
 	public List<PersonPhoneDto> getPersonsPhoneNumberByStation(final String stationNumber);
+
+	public List<PersonLivingAtAddressDto> getPersonsLivingAtAddress(final String address);
 
 }

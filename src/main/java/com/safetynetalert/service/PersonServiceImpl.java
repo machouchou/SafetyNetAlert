@@ -20,9 +20,11 @@ import com.safetynetalert.dto.ListPersonDto;
 import com.safetynetalert.dto.ListPersonPhoneNumberDto;
 import com.safetynetalert.dto.OtherPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonLivingAtAddressDto;
 import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.FireStation;
+import com.safetynetalert.model.MedicalRecord;
 import com.safetynetalert.model.Person;
 
 @Service
@@ -64,23 +66,25 @@ public class PersonServiceImpl implements IPersonService {
 		ListPersonDto listPersonDto = new ListPersonDto();
 		listPersonDto.setNbChildren(0);
 		listPersonDto.setNbAdults(0);
-		
+
 		for (Person person : list()) {
 			for (FireStation fireStation : fireStationsByNumber) {
 				if (person.getAddress().equalsIgnoreCase(fireStation.getAddress())) {
-					
-					person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName(person.getFirstName(), person.getLastName()));
-					PersonDto personDto = new PersonDto(person.getFirstName(), person.getLastName(), person.getAddress(), person.getPhone());
-					
+
+					person.setMedicalRecord(medicalRecordDao
+							.getMedicalRecordBasedOnFirstAndLastName(person.getFirstName(), person.getLastName()));
+					PersonDto personDto = new PersonDto(person.getFirstName(), person.getLastName(),
+							person.getAddress(), person.getPhone());
+
 					// Convertir birthDate récupérée sous forme de string en objet de type Date
 					String birthDateAsString = person.getMedicalRecord().getBirthDate();
-					
+
 					try {
 						int age = calculatePersonAge(birthDateAsString);
-					    
-					    setMinorOrAdultNumber(listPersonDto, age);
-					    					    
-					    listPersonDto.getListPersonDto().add(personDto);
+
+						setMinorOrAdultNumber(listPersonDto, age);
+
+						listPersonDto.getListPersonDto().add(personDto);
 					} catch (ParseException e) {
 						// Auto-generated catch block
 						e.printStackTrace();
@@ -98,31 +102,31 @@ public class PersonServiceImpl implements IPersonService {
 			listPersonDto.setNbAdults(listPersonDto.getNbAdults() + 1);
 		}
 	}
-	
+
 	private boolean isChild(Person person) {
-				
+
 		try {
 			int personAge = calculatePersonAge(person.getMedicalRecord().getBirthDate());
 			person.setAge(personAge);
-			
+
 			if (person.getAge() <= 18) {
 				return true;
 			}
-		
+
 		} catch (ParseException e) {
 			// Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
 	private int calculatePersonAge(String birthDateAsString) throws ParseException {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Calendar birthDate = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris")); 
+		Calendar birthDate = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		birthDate.setTime(formatter.parse(birthDateAsString));
 		Calendar today = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-			
+
 		return today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
 	}
 
@@ -131,10 +135,11 @@ public class PersonServiceImpl implements IPersonService {
 		List<Person> personsAtSameAddress = personDao.getListPersonsByAddress(address);
 		List<ChildDto> listChildrenDto = new ArrayList<>();
 		List<OtherPersonDto> listOtherPersons = new ArrayList<>();
-		
-		for (Person  person : personsAtSameAddress) {
-			person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName(person.getFirstName(), person.getLastName()));
-	
+
+		for (Person person : personsAtSameAddress) {
+			person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName(person.getFirstName(),
+					person.getLastName()));
+
 			if (isChild(person)) {
 				ChildDto childDto = new ChildDto(person.getFirstName(), person.getLastName(), person.getAge());
 				listChildrenDto.add(childDto);
@@ -143,33 +148,70 @@ public class PersonServiceImpl implements IPersonService {
 				listOtherPersons.add(otherPersonDto);
 			}
 		}
-		
+
 		return new PersonsAtAddressDto(listChildrenDto, listOtherPersons);
 	}
 
-
 	@Override
 	public List<PersonPhoneDto> getPersonsPhoneNumberByStation(String stationNumber) {
-		
+
 		List<FireStation> fireStationsByNumber = fireStationDao.getFireStations(stationNumber);
-				
+
 		List<Person> persons = new ArrayList<>();
 		List<PersonPhoneDto> phoneNumbersCoveredBySameStationNumber = new ArrayList<>();
-		
+
 		for (FireStation fireStation : fireStationsByNumber) {
 			String address = fireStation.getAddress();
 			persons.addAll(personDao.getListPersonsByAddress(address));
 		}
 		for (Person person : persons) {
-			// phoneNumbersCoveredBySameStationNumber.add(person.getFirstName(); + " " + person.getLastName() + " : " + person.getPhone());
-			PersonPhoneDto personPhoneDto = new PersonPhoneDto(person.getFirstName(), person.getLastName(), person.getPhone());
-			/*phoneNumbersCoveredBySameStationNumber.add(person.getFirstName());
-			phoneNumbersCoveredBySameStationNumber.add(person.getLastName());
-			phoneNumbersCoveredBySameStationNumber.add(person.getPhone());*/
+			// phoneNumbersCoveredBySameStationNumber.add(person.getFirstName(); + " " +
+			// person.getLastName() + " : " + person.getPhone());
+			PersonPhoneDto personPhoneDto = new PersonPhoneDto(person.getFirstName(), person.getLastName(),
+					person.getPhone());
+
 			phoneNumbersCoveredBySameStationNumber.add(personPhoneDto);
 		}
-		
+
 		return phoneNumbersCoveredBySameStationNumber;
 	}
 
+	@Override
+	public List<PersonLivingAtAddressDto> getPersonsLivingAtAddress(String address) {
+		
+		List<FireStation> fireStationsAddress = fireStationDao.getFireStationAddress(address);
+		
+		List<PersonLivingAtAddressDto> personsLivingAtAddress = new ArrayList<>();
+		
+		try {
+						
+			for (Person person : personDao.getListPersonsByAddress(address)) {
+				
+				for (FireStation fireStation : fireStationsAddress) {
+					
+					if (person.getAddress().equalsIgnoreCase(fireStation.getAddress())) {
+						person.setFireStation(fireStation);
+					}
+				
+					person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName
+								(person.getFirstName(), person.getLastName()));
+					
+					PersonLivingAtAddressDto personLivingAtAddressDto = new PersonLivingAtAddressDto();
+					personLivingAtAddressDto.setFirstName(person.getFirstName());
+					personLivingAtAddressDto.setLastName(person.getLastName());
+					personLivingAtAddressDto.setPhone(person.getPhone());
+					personLivingAtAddressDto.setStation(person.getFireStation().getStation());
+					personLivingAtAddressDto.setAge(calculatePersonAge(person.getMedicalRecord().getBirthDate()));
+					personLivingAtAddressDto.setMedications(person.getMedicalRecord().getMedications());
+					personLivingAtAddressDto.setAllergies(person.getMedicalRecord().getAllergies());
+					
+					personsLivingAtAddress.add(personLivingAtAddressDto);
+				}
+			}
+				
+			} catch (ParseException e) {
+				
+			}
+			return personsLivingAtAddress;
+		}
 }

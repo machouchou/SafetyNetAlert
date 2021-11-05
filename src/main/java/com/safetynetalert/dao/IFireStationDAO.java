@@ -23,6 +23,8 @@ public interface IFireStationDAO {
 	public boolean delete(final FireStation fireStation);
 	
 	public List<FireStation> getFireStations(String stationNumber);
-
+	
+	public List<FireStation> getFireStationAddress(String address);
 
 }
+ 
