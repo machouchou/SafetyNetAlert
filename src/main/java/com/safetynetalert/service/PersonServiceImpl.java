@@ -16,10 +16,12 @@ import com.safetynetalert.dao.IPersonDAO;
 import com.safetynetalert.dao.JSONFireStationDAO;
 import com.safetynetalert.dao.JSONMedicalRecordDAO;
 import com.safetynetalert.dto.ChildDto;
+import com.safetynetalert.dto.FloodedPersonByAddressDto;
 import com.safetynetalert.dto.ListPersonDto;
 import com.safetynetalert.dto.ListPersonPhoneNumberDto;
 import com.safetynetalert.dto.OtherPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonInfoDto;
 import com.safetynetalert.dto.PersonLivingAtAddressDto;
 import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
@@ -167,8 +169,7 @@ public class PersonServiceImpl implements IPersonService {
 		for (Person person : persons) {
 			// phoneNumbersCoveredBySameStationNumber.add(person.getFirstName(); + " " +
 			// person.getLastName() + " : " + person.getPhone());
-			PersonPhoneDto personPhoneDto = new PersonPhoneDto(person.getFirstName(), person.getLastName(),
-					person.getPhone());
+			PersonPhoneDto personPhoneDto = new PersonPhoneDto(person.getPhone());
 
 			phoneNumbersCoveredBySameStationNumber.add(personPhoneDto);
 		}
@@ -221,4 +222,98 @@ public class PersonServiceImpl implements IPersonService {
 		
 		return personLivingAtAddressDto;
 	}
+
+	@Override
+	public List<FloodedPersonByAddressDto> getFloodedPersonsByAddress(List<String> stationNumbers) {
+		
+		/*st<FireStation> fireStationsByNumber = fireStationDao.getFireStations());
+
+		List<FloodedPersonByAddressDto> floodedPersonByAddress = new ArrayList<>();
+		
+		try {
+			
+			for (Person person : personDao.getListPersonsByAddress(address)) {
+
+				for (FireStation fireStation : fireStationNumber) {
+					String address = fireStation.getAddress();
+					
+					if (person.getAddress().equalsIgnoreCase(fireStation.getAddress())) {
+						person.setFireStation(fireStation);
+					}
+				
+					person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName
+								(person.getFirstName(), person.getLastName()));
+					
+					//FloodedPersonByAddressDto floodedPersonByAddressDto = constructFloodedPersonByAddressDto(person);
+					
+					FloodedPersonByAddressDto floodedPersonByAddressDto = new FloodedPersonByAddressDto();
+					floodedPersonByAddressDto.setFirstName(person.getAddress());
+					floodedPersonByAddressDto.setFirstName(person.getFirstName());
+					floodedPersonByAddressDto.setLastName(person.getLastName());
+					floodedPersonByAddressDto.setPhone(person.getPhone());
+					floodedPersonByAddressDto.setAge(calculatePersonAge(person.getMedicalRecord().getBirthDate()));
+					floodedPersonByAddressDto.setMedications(person.getMedicalRecord().getMedications());
+					floodedPersonByAddressDto.setAllergies(person.getMedicalRecord().getAllergies());
+					floodedPersonByAddressDto.add(floodedPersonByAddressDto);
+				}
+			}
+				
+			} catch (ParseException e) {
+				
+			}*/
+		return null;
+	}
+	
+	private FloodedPersonByAddressDto constructFloodedPersonByAddressDto(Person person) throws ParseException {
+		
+		FloodedPersonByAddressDto floodedPersonByAddressDto = new FloodedPersonByAddressDto();
+		floodedPersonByAddressDto.setFirstName(person.getAddress());
+		floodedPersonByAddressDto.setFirstName(person.getFirstName());
+		floodedPersonByAddressDto.setLastName(person.getLastName());
+		floodedPersonByAddressDto.setPhone(person.getPhone());
+		floodedPersonByAddressDto.setAge(calculatePersonAge(person.getMedicalRecord().getBirthDate()));
+		floodedPersonByAddressDto.setMedications(person.getMedicalRecord().getMedications());
+		floodedPersonByAddressDto.setAllergies(person.getMedicalRecord().getAllergies());
+		
+		return floodedPersonByAddressDto;
+	}
+	
+	@Override
+	public List<PersonInfoDto> getPersonsInfo(String firstName, String lastName) {
+		
+		List<PersonInfoDto> personsInfo = new ArrayList<>();
+		
+		try {
+			for (Person person : personDao.getListPersonsByLastName(lastName)) {
+			
+				for (MedicalRecord medicalRecord : medicalRecordDao.getMedicalRecordsBasedOnLastName(lastName)) {
+					if(person.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) 
+							&& person.getLastName().equalsIgnoreCase(medicalRecord.getLastName())) {
+				
+					person.setMedicalRecord(medicalRecordDao
+							.getMedicalRecordBasedOnFirstAndLastName(person.getFirstName(), person.getLastName()));
+					
+					PersonInfoDto personInfoDto = constructPersonInfoDto(person);
+					personsInfo.add(personInfoDto);
+				}
+			}
+		}
+			
+		} catch (ParseException e) {
+			
+		}
+		
+		return personsInfo;
+	}
+	
+	private PersonInfoDto constructPersonInfoDto(Person person) throws ParseException {
+		
+		PersonInfoDto personInfoDto = new PersonInfoDto(person.getFirstName(), person.getLastName(),person.getAddress());
+		personInfoDto.setAge(calculatePersonAge(person.getMedicalRecord().getBirthDate()));
+		personInfoDto.setEmail(person.getEmail());
+		personInfoDto.setMedications(person.getMedicalRecord().getMedications());
+		personInfoDto.setAllergies(person.getMedicalRecord().getAllergies());
+		
+		return personInfoDto;
+	}	
 }

@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynetalert.dto.ChildDto;
+import com.safetynetalert.dto.FloodedPersonByAddressDto;
 import com.safetynetalert.dto.ListPersonPhoneNumberDto;
 import com.safetynetalert.dto.ListPersonDto;
 import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.dto.PersonInfoDto;
 import com.safetynetalert.dto.PersonLivingAtAddressDto;
 import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
@@ -65,5 +67,14 @@ public class PersonController {
 	@GetMapping("fire")
 	public List<PersonLivingAtAddressDto> listPersonsLivingAtAddress(@RequestParam final String address) {
 		return this.personService.getPersonsLivingAtAddress(address);
+	}
+	@GetMapping("flood/stations")
+	public List<FloodedPersonByAddressDto> listFloodedPersonsBytAddress(@RequestParam final List<String> stationNumbers) {
+		return this.personService.getFloodedPersonsByAddress(stationNumbers);
+	}
+	
+	@GetMapping("personInfo")
+	public List<PersonInfoDto> listPersonsInfo(@RequestParam final String firstName, @RequestParam final String lastName ) {
+		return this.personService.getPersonsInfo(firstName, lastName);
 	}
 }

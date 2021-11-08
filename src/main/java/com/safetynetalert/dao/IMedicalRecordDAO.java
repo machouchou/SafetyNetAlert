@@ -23,4 +23,6 @@ public interface IMedicalRecordDAO {
 
 	MedicalRecord getMedicalRecordBasedOnFirstAndLastName(String firstName, String lastName);
 
+	List<MedicalRecord> getMedicalRecordsBasedOnLastName(String lastName);
+
 }

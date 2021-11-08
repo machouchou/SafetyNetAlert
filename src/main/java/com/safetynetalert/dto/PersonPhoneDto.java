@@ -1,19 +1,17 @@
 package com.safetynetalert.dto;
 
 public class PersonPhoneDto {
-	private String firstName;
-	private String lastName;
+	/*private String firstName;
+	private String lastName;*/
 	private String phone;
 	
 
-	public PersonPhoneDto(String firstName, String lastName, String phone) {
+	public PersonPhoneDto(String phone) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.phone = phone;
 	}
 
-	public String getFirstName() {
+	/*public String getFirstName() {
 		return firstName;
 	}
 
@@ -27,7 +25,7 @@ public class PersonPhoneDto {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
+	}*/
 
 	public String getPhone() {
 		return phone;

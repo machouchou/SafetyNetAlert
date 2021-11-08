@@ -3,7 +3,9 @@ package com.safetynetalert.service;
 import java.util.List;
 import java.util.Set;
 
+import com.safetynetalert.dto.FloodedPersonByAddressDto;
 import com.safetynetalert.dto.ListPersonDto;
+import com.safetynetalert.dto.PersonInfoDto;
 import com.safetynetalert.dto.PersonLivingAtAddressDto;
 import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
@@ -26,5 +28,8 @@ public interface IPersonService {
 	public List<PersonPhoneDto> getPersonsPhoneNumberByStation(final String stationNumber);
 
 	public List<PersonLivingAtAddressDto> getPersonsLivingAtAddress(final String address);
+
+	public List<FloodedPersonByAddressDto> getFloodedPersonsByAddress(List<String> stationNumbers);
 	
+	public List<PersonInfoDto> getPersonsInfo(String firstName, String lastName);
 }

@@ -28,7 +28,14 @@ public class JSONPersonDAO implements IPersonDAO {
 		//.distinct()
 		.collect(Collectors.toList());
 	}
-
+	
+	@Override
+	public List<Person> getListPersonsByLastName(final String lastName) {
+		return database.getlPerson().stream()
+		.filter(person -> person.getLastName().equalsIgnoreCase(lastName))
+		//.distinct()
+		.collect(Collectors.toList());
+	}
 	@Override
 	public boolean insert(final Person person) {
 		return database.getlPerson().add(person);

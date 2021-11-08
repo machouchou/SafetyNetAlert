@@ -26,5 +26,7 @@ public interface IFireStationDAO {
 	
 	public List<FireStation> getFireStationAddress(String address);
 
+	/*List<FireStation> getFireStationsNumber(List<String> stationsNumber);*/
+
 }
  

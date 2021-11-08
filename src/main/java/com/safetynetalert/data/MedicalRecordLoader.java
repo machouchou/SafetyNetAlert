@@ -17,9 +17,7 @@ public class MedicalRecordLoader {
 	public List<MedicalRecord> loadDataFromJsonFile(String fileName) {
 
 		List<MedicalRecord> lMedicalRecord = new ArrayList<>();
-		List<String> lMedications = new ArrayList<>();
-		List<String> lAllergies = new ArrayList<>();
-
+		
 		// Lire le fichier JSON et convertir les lignes en objet MedicalRecord
 		try {
 			String text = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
@@ -35,14 +33,15 @@ public class MedicalRecordLoader {
 				JSONArray arrMedications = arrMedicalRecords.getJSONObject(z).getJSONArray("medications");
 				JSONArray arrAllergies = arrMedicalRecords.getJSONObject(z).getJSONArray("allergies");
 				
+				List<String> lMedications = new ArrayList<>();
+				List<String> lAllergies = new ArrayList<>();
+				
 				//List<String> medications = arr.getJSONObject(z).getList<String>("medications");
 				arrMedications.forEach(medication -> lMedications.add(medication.toString()));
 				
 				for (Object allergy : arrAllergies) {
 					lAllergies.add(allergy.toString());
 				}
-				
-				
 				
 				//List<String> allergies = arr.getJSONObject(z).getList<String>("allergies");
 

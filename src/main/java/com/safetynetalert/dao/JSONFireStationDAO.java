@@ -44,6 +44,14 @@ public class JSONFireStationDAO implements IFireStationDAO {
 		        .collect(Collectors.toList());
 	}
 	
+	/*@Override
+	public List<FireStation> getFireStationsNumber(List<String> stationsNumber) {
+		return database.getlFireStation().stream()
+        .filter(fireStation -> fireStation.getStations().equals(stationsNumber))
+        .distinct()
+        .collect(Collectors.toList());
+	}*/
+	
 	@Override 
 	public boolean insert(final FireStation fireStation) {
 		for (FireStation existingFireStation : getFireStations()) {
