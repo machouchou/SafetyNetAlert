@@ -5,10 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,10 @@ import com.safetynetalert.dao.JSONMedicalRecordDAO;
 import com.safetynetalert.dto.ChildDto;
 import com.safetynetalert.dto.FloodedPersonByAddressDto;
 import com.safetynetalert.dto.ListPersonDto;
-import com.safetynetalert.dto.ListPersonPhoneNumberDto;
 import com.safetynetalert.dto.OtherPersonDto;
 import com.safetynetalert.dto.PersonDto;
 import com.safetynetalert.dto.PersonInfoDto;
 import com.safetynetalert.dto.PersonLivingAtAddressDto;
-import com.safetynetalert.dto.PersonPhoneDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
 import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.MedicalRecord;
@@ -155,12 +153,12 @@ public class PersonServiceImpl implements IPersonService {
 	}
 
 	@Override
-	public List<PersonPhoneDto> getPersonsPhoneNumberByStation(String stationNumber) {
+	public List<String> getPersonsPhoneNumberByStation(String stationNumber) {
 
 		List<FireStation> fireStationsByNumber = fireStationDao.getFireStations(stationNumber);
 
 		List<Person> persons = new ArrayList<>();
-		List<PersonPhoneDto> phoneNumbersCoveredBySameStationNumber = new ArrayList<>();
+		List<String> phoneNumbersCoveredBySameStationNumber = new ArrayList<>();
 
 		for (FireStation fireStation : fireStationsByNumber) {
 			String address = fireStation.getAddress();
@@ -169,12 +167,12 @@ public class PersonServiceImpl implements IPersonService {
 		for (Person person : persons) {
 			// phoneNumbersCoveredBySameStationNumber.add(person.getFirstName(); + " " +
 			// person.getLastName() + " : " + person.getPhone());
-			PersonPhoneDto personPhoneDto = new PersonPhoneDto(person.getPhone());
+			String phoneNumber = person.getPhone();
 
-			phoneNumbersCoveredBySameStationNumber.add(personPhoneDto);
+			phoneNumbersCoveredBySameStationNumber.add(phoneNumber);
 		}
 
-		return phoneNumbersCoveredBySameStationNumber;
+		return phoneNumbersCoveredBySameStationNumber.stream().distinct().collect(Collectors.toList());
 	}
 
 	@Override
@@ -226,48 +224,41 @@ public class PersonServiceImpl implements IPersonService {
 	@Override
 	public List<FloodedPersonByAddressDto> getFloodedPersonsByAddress(List<String> stationNumbers) {
 		
-		/*st<FireStation> fireStationsByNumber = fireStationDao.getFireStations());
-
-		List<FloodedPersonByAddressDto> floodedPersonByAddress = new ArrayList<>();
+		List<Person> persons = new ArrayList<>();
+		List<FloodedPersonByAddressDto> floodedPersonsByAddress = new ArrayList<>();
 		
-		try {
+		for (String stationNumber : stationNumbers) {
+			List<String> addresses = new ArrayList<String>();
+					addresses= fireStationDao.getAddressesCoveredByAStationNumber(stationNumber);
 			
-			for (Person person : personDao.getListPersonsByAddress(address)) {
-
-				for (FireStation fireStation : fireStationNumber) {
-					String address = fireStation.getAddress();
-					
-					if (person.getAddress().equalsIgnoreCase(fireStation.getAddress())) {
-						person.setFireStation(fireStation);
-					}
-				
-					person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName
-								(person.getFirstName(), person.getLastName()));
-					
-					//FloodedPersonByAddressDto floodedPersonByAddressDto = constructFloodedPersonByAddressDto(person);
-					
-					FloodedPersonByAddressDto floodedPersonByAddressDto = new FloodedPersonByAddressDto();
-					floodedPersonByAddressDto.setFirstName(person.getAddress());
-					floodedPersonByAddressDto.setFirstName(person.getFirstName());
-					floodedPersonByAddressDto.setLastName(person.getLastName());
-					floodedPersonByAddressDto.setPhone(person.getPhone());
-					floodedPersonByAddressDto.setAge(calculatePersonAge(person.getMedicalRecord().getBirthDate()));
-					floodedPersonByAddressDto.setMedications(person.getMedicalRecord().getMedications());
-					floodedPersonByAddressDto.setAllergies(person.getMedicalRecord().getAllergies());
-					floodedPersonByAddressDto.add(floodedPersonByAddressDto);
-				}
+			for (String address : addresses) {
+				persons.addAll(personDao.getListPersonsByAddress(address));
 			}
+		}
+		
+		for (Person person : persons) {
 				
-			} catch (ParseException e) {
+			person.setMedicalRecord(medicalRecordDao.getMedicalRecordBasedOnFirstAndLastName
+					(person.getFirstName(), person.getLastName()));
+			
+			try {
+				FloodedPersonByAddressDto floodedPersonByAddressDto = constructFloodedPersonByAddressDto(person);
 				
-			}*/
-		return null;
+				floodedPersonsByAddress.add(floodedPersonByAddressDto);
+				
+				} catch (ParseException e) {
+			
+				e.printStackTrace();
+			}
+				 
+		}
+		return floodedPersonsByAddress;
 	}
 	
 	private FloodedPersonByAddressDto constructFloodedPersonByAddressDto(Person person) throws ParseException {
 		
 		FloodedPersonByAddressDto floodedPersonByAddressDto = new FloodedPersonByAddressDto();
-		floodedPersonByAddressDto.setFirstName(person.getAddress());
+		floodedPersonByAddressDto.setAddress(person.getAddress());
 		floodedPersonByAddressDto.setFirstName(person.getFirstName());
 		floodedPersonByAddressDto.setLastName(person.getLastName());
 		floodedPersonByAddressDto.setPhone(person.getPhone());
@@ -315,5 +306,20 @@ public class PersonServiceImpl implements IPersonService {
 		personInfoDto.setAllergies(person.getMedicalRecord().getAllergies());
 		
 		return personInfoDto;
+	}
+
+	@Override
+	public List<String> getPersonsCommunityEmailByCity(String city) {
+		
+		List<String> emails = new ArrayList<>();
+		List<Person> personEmailByCity = personDao.getListPersonsByCity(city);
+		
+		for (Person person : personEmailByCity) {
+			String email = person.getEmail();
+			
+			emails.add(email);
+		}
+		
+		return emails.stream().distinct().collect(Collectors.toList());
 	}	
 }

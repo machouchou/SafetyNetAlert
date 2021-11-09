@@ -25,7 +25,7 @@ public class JSONPersonDAO implements IPersonDAO {
 	public List<Person> getListPersonsByAddress(String address) {
 		return database.getlPerson().stream()
 		.filter(person -> person.getAddress().equals(address))
-		//.distinct()
+		.distinct()
 		.collect(Collectors.toList());
 	}
 	
@@ -36,6 +36,31 @@ public class JSONPersonDAO implements IPersonDAO {
 		//.distinct()
 		.collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<Person> getListPersonsByCity(final String city) {
+		return database.getlPerson().stream()
+		.filter(person -> person.getCity().equalsIgnoreCase(city))
+		//.distinct()
+		.collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<Person> getListPersonEmails(final String email) {
+		return database.getlPerson().stream()
+        .filter(person -> person.getEmail().equalsIgnoreCase(email))
+        // .map(x -> x.getAddress()).distinct()
+        .collect(Collectors.toList());
+	}
+	
+	/*@Override
+	public List<String> getEmailsByCity(String city) {
+		return database.getlPerson().stream()
+		        .filter(person -> person.getCity().equals(city))
+		        .map(Person::getEmail).distinct()
+		        .collect(Collectors.toList());
+	}*/
+		
 	@Override
 	public boolean insert(final Person person) {
 		return database.getlPerson().add(person);

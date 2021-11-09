@@ -17,6 +17,11 @@ public interface IPersonDAO {
 	public List<Person> getListPersonsByAddress(final String address);
 
 	List<Person> getListPersonsByLastName(final String lastName);
-	
+
+	List<Person> getListPersonsByCity(String city);
+
+	List<Person> getListPersonEmails(String email);
+
+	//List<String> getEmailsByCity(String city);
 	
 }

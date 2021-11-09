@@ -42,7 +42,6 @@ public class MedicalRecordLoader {
 				for (Object allergy : arrAllergies) {
 					lAllergies.add(allergy.toString());
 				}
-				
 				//List<String> allergies = arr.getJSONObject(z).getList<String>("allergies");
 
 				MedicalRecord medicalRecord = new MedicalRecord(firstName, lastName, birthDate, lMedications, lAllergies);
@@ -52,6 +51,7 @@ public class MedicalRecordLoader {
 		}
 
 		return lMedicalRecord;
+		
 	}
 
 }

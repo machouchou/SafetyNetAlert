@@ -24,15 +24,16 @@ public class JSONFireStationDAO implements IFireStationDAO {
 	
 	@Override
 	public List<FireStation> getFireStations() {
-		// Auto-generated method stub
+		
 		return database.getlFireStation();
 	}
 	
 	@Override
 	public List<FireStation> getFireStations(String stationNumber) {
+		
 		return database.getlFireStation().stream()
         .filter(fireStation -> fireStation.getStation().equals(stationNumber))
-        .distinct()
+        // .map(x -> x.getAddress()).distinct()
         .collect(Collectors.toList());
 	}
 
@@ -44,13 +45,13 @@ public class JSONFireStationDAO implements IFireStationDAO {
 		        .collect(Collectors.toList());
 	}
 	
-	/*@Override
-	public List<FireStation> getFireStationsNumber(List<String> stationsNumber) {
+	@Override
+	public List<String> getAddressesCoveredByAStationNumber(String stationNumber) {
 		return database.getlFireStation().stream()
-        .filter(fireStation -> fireStation.getStations().equals(stationsNumber))
-        .distinct()
-        .collect(Collectors.toList());
-	}*/
+		        .filter(fireStation -> fireStation.getStation().equals(stationNumber))
+		        .map(FireStation::getAddress).distinct()
+		        .collect(Collectors.toList());
+	}
 	
 	@Override 
 	public boolean insert(final FireStation fireStation) {
@@ -66,7 +67,7 @@ public class JSONFireStationDAO implements IFireStationDAO {
 	
 	@Override
 	public boolean update(final FireStation fireStation) {
-		// Auto-generated method stub
+		
 		List<FireStation> listFireStation = this.getFireStations();
 		for (FireStation existingFireStation : listFireStation) {
 			if (existingFireStation.getAddress().equalsIgnoreCase(fireStation.getAddress())
