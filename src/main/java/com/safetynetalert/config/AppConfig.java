@@ -18,7 +18,9 @@ public class AppConfig {
 	
 	@Bean
 	public Database initDatabase() {
-		logger.debug("initDatabase()");
+		logger.debug("DEBUG - initDatabase()");
+		logger.error("ERROR - initDatabase()");
+		logger.info("INFO - initDatabase()");
 		
 		Database database = new Database();
 		database.loadData(dataFileFromJson);

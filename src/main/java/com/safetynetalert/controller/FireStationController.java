@@ -3,6 +3,8 @@ package com.safetynetalert.controller;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
 import com.safetynetalert.service.IFireStationService;
@@ -19,26 +22,28 @@ import com.safetynetalert.service.IFireStationService;
 @RestController
 public class FireStationController {
 	
+	static final Logger logger = LogManager.getLogger(FireStationController.class);
+	
 	@Autowired
 	private IFireStationService fireStationService;
 	
-	@GetMapping("fireStation")
+	@GetMapping("/fireStation")
 	public List<FireStation> list() {
 		return this.fireStationService.getFireStations();
 
 	}
 	
-	@PostMapping("fireStation")
+	@PostMapping("/fireStation")
 	public boolean insert(@NotNull @RequestBody FireStation fireStation) {
 		return this.fireStationService.insert(fireStation);
 	}
 	
-	@PutMapping("fireStation")
+	@PutMapping("/fireStation")
 	public boolean update(@NotNull @RequestBody final FireStation fireStation) {
 		return this.fireStationService.update(fireStation);
 	}
 	
-	@DeleteMapping("fireStation")
+	@DeleteMapping("/fireStation")
 	public boolean delete(@NotNull @RequestBody final FireStation fireStation) {
 		return this.fireStationService.delete(fireStation);
 	}

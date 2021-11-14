@@ -5,6 +5,10 @@ import java.util.Objects;
 public class FireStation {
 	private String address;
 	private String station;
+	
+	public FireStation() {
+		super();
+	}
 	/**
 	 * @param address
 	 * @param station

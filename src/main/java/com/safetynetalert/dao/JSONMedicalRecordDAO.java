@@ -6,9 +6,12 @@ package com.safetynetalert.dao;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.data.Database;
 import com.safetynetalert.model.MedicalRecord;
 
@@ -18,6 +21,8 @@ import com.safetynetalert.model.MedicalRecord;
  */
 @Repository
 public class JSONMedicalRecordDAO implements IMedicalRecordDAO{
+	
+	static final Logger logger = LogManager.getLogger(JSONMedicalRecordDAO.class);
 
 	@Autowired
 	private Database database;

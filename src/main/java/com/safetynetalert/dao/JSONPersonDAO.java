@@ -3,15 +3,20 @@ package com.safetynetalert.dao;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.data.Database;
 import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
 
 @Repository
 public class JSONPersonDAO implements IPersonDAO {
+	
+	static final Logger logger = LogManager.getLogger(JSONPersonDAO.class);
 
 	@Autowired
 	private Database database;
@@ -71,7 +76,13 @@ public class JSONPersonDAO implements IPersonDAO {
 		// Etape 1 : Trouver la personne à modifier venant de la liste de database (nom
 		// + prenom)
 		List<Person> myList = this.getPersonList();
+		
+		
 		for (Person existingPerson : myList) {
+			if (person.getFirstName().equalsIgnoreCase("John")) {
+				System.out.println("Hello");
+			}
+			
 			if (existingPerson.getFirstName().equalsIgnoreCase(person.getFirstName())
 					&& existingPerson.getLastName().equalsIgnoreCase(person.getLastName())) {
 				// Etape 2 : Quand la personne est trouvée, modifier les valeur de la personne

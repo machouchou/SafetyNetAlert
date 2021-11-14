@@ -1,4 +1,4 @@
-package com.safetynetalert.App;
+package com.safetynetalert.serviceTest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

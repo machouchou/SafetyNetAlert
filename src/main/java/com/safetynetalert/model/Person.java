@@ -1,6 +1,8 @@
 package com.safetynetalert.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties({"medicalRecord", "age", "fireStation", "station"})
 public class Person {
 	
 	private String firstName;
@@ -15,6 +17,10 @@ public class Person {
 	private FireStation fireStation;
 	private String station;
 	
+	public Person() {
+		super();
+	}
+	
 	public Person(String firstName, String lastName, String address, String city, String zip, String phone,
 			String email) {
 		super();
@@ -26,6 +32,7 @@ public class Person {
 		this.phone = phone;
 		this.email = email;
 	}
+
 	public int getAge() {
 		return age;
 	}

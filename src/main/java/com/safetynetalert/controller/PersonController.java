@@ -3,6 +3,8 @@ package com.safetynetalert.controller;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +24,15 @@ import com.safetynetalert.service.IPersonService;
 
 @RestController
 public class PersonController {
+	
+	static final Logger logger = LogManager.getLogger(PersonController.class);
 
 	@Autowired
 	private IPersonService personService;
 
 	@GetMapping("person")
 	public List<Person> list() {
+		logger.info("list()");
 		return this.personService.list();
 	}
 

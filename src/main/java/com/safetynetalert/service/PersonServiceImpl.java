@@ -9,9 +9,12 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.dao.IPersonDAO;
 import com.safetynetalert.dao.JSONFireStationDAO;
 import com.safetynetalert.dao.JSONMedicalRecordDAO;
@@ -29,6 +32,8 @@ import com.safetynetalert.model.Person;
 
 @Service
 public class PersonServiceImpl implements IPersonService {
+	
+	static final Logger logger = LogManager.getLogger(PersonServiceImpl.class);
 
 	@Autowired
 	private IPersonDAO personDao;
@@ -38,30 +43,46 @@ public class PersonServiceImpl implements IPersonService {
 
 	@Autowired
 	private JSONMedicalRecordDAO medicalRecordDao;
-
+	
 	@Override
 	public List<Person> list() {
-		return this.personDao.getPersonList();
+		logger.debug("list()");
+		return personDao.getPersonList();
 	}
-
+		
 	@Override
 	public boolean insert(Person person) {
+		logger.debug("insert(Person : {})",  person);
+		
+		boolean isDuplicatePerson = list().stream().anyMatch(p -> p.getFirstName().equalsIgnoreCase(person.getFirstName()) &&
+				p.getLastName().equalsIgnoreCase(person.getLastName()));
+			
+		if (isDuplicatePerson) {
+			logger.error("This {} already exists, insertion is impossible.", person);
+			return false;
+		}
+		
 		return this.personDao.insert(person);
 	}
 
 	@Override
 	public boolean update(Person person) {
+		logger.debug("update(Person :  {})",  person);
+		
 		return this.personDao.update(person);
 	}
 
 	@Override
 	public boolean delete(String lastname, String firstname) {
+		logger.debug("delete(lastname : {}, firstname : {})", lastname, firstname);
+		
 		return this.personDao.delete(lastname, firstname);
 	}
 
 	@Override
 	public ListPersonDto getPersonsCoveredByStationNumber(String stationNumber) {
-
+		logger.debug("getPersonsCoveredByStationNumber(stationNumber : {})", stationNumber);
+		
 		List<FireStation> fireStationsByNumber = fireStationDao.getFireStations(stationNumber);
 		ListPersonDto listPersonDto = new ListPersonDto();
 		listPersonDto.setNbChildren(0);
@@ -96,6 +117,7 @@ public class PersonServiceImpl implements IPersonService {
 	}
 
 	private void setMinorOrAdultNumber(ListPersonDto listPersonDto, int age) {
+		logger.debug("setMinorOrAdultNumber(listPersonDto : {}, age : {})", listPersonDto, age);
 		if (age < 18) {
 			listPersonDto.setNbChildren(listPersonDto.getNbChildren() + 1);
 		} else {

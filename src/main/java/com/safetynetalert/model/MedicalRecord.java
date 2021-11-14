@@ -8,6 +8,10 @@ public class MedicalRecord {
 	private String birthDate;
 	private List<String> medications;
 	private List<String> allergies;
+	
+	public MedicalRecord() {
+		super();
+	}
 	/**
 	 * @param firstName
 	 * @param lastName

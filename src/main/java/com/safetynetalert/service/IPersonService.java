@@ -3,7 +3,6 @@ package com.safetynetalert.service;
 import java.util.List;
 import com.safetynetalert.dto.FloodedPersonByAddressDto;
 import com.safetynetalert.dto.ListPersonDto;
-import com.safetynetalert.dto.PersonCommunityEmailByCityDto;
 import com.safetynetalert.dto.PersonInfoDto;
 import com.safetynetalert.dto.PersonLivingAtAddressDto;
 import com.safetynetalert.dto.PersonsAtAddressDto;
