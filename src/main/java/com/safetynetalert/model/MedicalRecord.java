@@ -1,4 +1,4 @@
-package com.safetynetalert.model;
+ package com.safetynetalert.model;
 
 import java.util.List;
 

@@ -53,6 +53,7 @@ public class JSONMedicalRecordDAO implements IMedicalRecordDAO{
 
 	@Override
 	public boolean insert(final MedicalRecord medicalRecord) {
+		//logger.error("This {} already exists, insertion is impossible.", medicalRecord);
 		return database.getlMedicalRecord().add(medicalRecord);
 	}
 

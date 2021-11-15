@@ -63,6 +63,7 @@ public class JSONFireStationDAO implements IFireStationDAO {
 		for (FireStation existingFireStation : getFireStations()) {
 			if (existingFireStation.getAddress().equalsIgnoreCase(fireStation.getAddress())
 					&& existingFireStation.getStation().equalsIgnoreCase(fireStation.getStation())) {
+				logger.error("This {} already exists, insertion is impossible.", fireStation);
 				return false;
 			}
 		}

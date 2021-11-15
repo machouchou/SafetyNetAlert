@@ -2,6 +2,8 @@ package com.safetynetalert.service;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import com.safetynetalert.model.MedicalRecord;
 
 @Service
 public class MedicalRecordServiceImpl implements IMedicalRecordService{
+	
+	static final Logger logger = LogManager.getLogger(MedicalRecordServiceImpl.class);
 	
 	@Autowired
 	private IMedicalRecordDAO medicalRecordDAO;

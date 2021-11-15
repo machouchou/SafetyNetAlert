@@ -2,10 +2,6 @@ package com.safetynetalert.serviceTest;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,9 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import com.safetynetalert.dao.IPersonDAO;
-import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
 import com.safetynetalert.service.IPersonService;
 
@@ -36,17 +29,17 @@ public class PersonServiceTest {
 	@Test
 	public void list() {
 		
-		/*
-		List<Person> lPersons = new ArrayList<>();
-		Person person = new Person();
-		lPersons.add(person);
+		// Arrange
+		String firstName = "Sophia", lastName = "Zemicks";
 		
-		when(JSONPersonDao.getPersonList()).thenReturn(lPersons);
+		//Act
+		List<Person> lPersons = personService.list();
 		
+		Assertions.assertNotEquals(Collections.EMPTY_LIST, lPersons.size());
 		
-		List
-		assertEquals(lPersons.size(), lResult.size());
-		*/
+		assertTrue(lPersons.stream().anyMatch(person ->firstName.equalsIgnoreCase(person.getFirstName()) &&
+				lastName.equals(person.getLastName())));
+		
 	}
 	
 	@Test
@@ -57,7 +50,6 @@ public class PersonServiceTest {
 			
 		// Act
 		Boolean isInserted = personService.insert(person);
-		lPerson = personService.list();
 		
 		// Assert
 		assertTrue(isInserted);
@@ -69,16 +61,19 @@ public class PersonServiceTest {
 	
 	@Test
 	public void insert_duplicateAndValidPerson_InsertionFails() {
-		// Arrange
-		insert_newAndValidPerson_PersonExistsInPersonList();
 		
+		// Arrange
 		Person person = new Person("Pichereau", "Elsa", "1511 Culver St",
 				"Paris", "75017", "0603037826", "elpiche@gmail.com" );
 			
 		// Act
+		personService.insert(person);
+		
+		// Act
 		Boolean isInserted = personService.insert(person);
-				
+	
 		// Assert
 		assertFalse(isInserted);
+		Assertions.assertNotEquals(Collections.EMPTY_LIST, lPerson.size());
 	}
 }

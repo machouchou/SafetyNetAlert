@@ -18,8 +18,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.safetynetalert.dao.IMedicalRecordDAO;
 import com.safetynetalert.dao.JSONMedicalRecordDAO;
+import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.MedicalRecord;
 import com.safetynetalert.service.IMedicalRecordService;
+import com.safetynetalert.service.MedicalRecordServiceImpl;
 
 @SpringBootTest
 public class MedicalRecordServiceTest {
@@ -44,5 +46,24 @@ public class MedicalRecordServiceTest {
 				lastName.equals(result.getLastName())));
 		
 	}
+	
+	@Test
+	public void insert_newAndValidMedicalRecord_MedicalRecordInsertsInMedicalRecordList( ) {
+		// Arrange
+		List<String> medication = new ArrayList<>();
+		List<String> allergy = new ArrayList<>();
+		MedicalRecord medicalRecord = new MedicalRecord("Michel", "Toto", 
+				"10/17/2020", medication, allergy);
+		List<MedicalRecord> lMedicalRecords = medicalRecordService.list();
+		
+		// Act
+		Boolean isInserted = medicalRecordService.insert(medicalRecord);
+		
+		// Assert
+		assertTrue(isInserted);
+		Assertions.assertNotEquals(Collections.EMPTY_LIST, lMedicalRecords);
+		assertTrue(lMedicalRecords.contains(medicalRecord));
+	}
+		
 
 }
