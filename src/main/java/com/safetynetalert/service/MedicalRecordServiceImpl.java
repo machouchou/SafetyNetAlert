@@ -34,8 +34,8 @@ public class MedicalRecordServiceImpl implements IMedicalRecordService{
 	}
 
 	@Override
-	public boolean delete(String lastname, String firstname) {
-		return this.medicalRecordDAO.delete(lastname, firstname);
+	public boolean delete(String firstName, String lastName) {
+		return this.medicalRecordDAO.delete(firstName, lastName);
 	}
 
 }

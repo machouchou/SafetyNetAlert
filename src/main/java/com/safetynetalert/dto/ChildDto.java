@@ -5,6 +5,10 @@ public class ChildDto {
 	private String lastName;
 	private int age;
 	
+	public ChildDto() {
+		super();
+	}
+
 	public ChildDto(String firstName, String lastName, int age) {
 		super();
 		this.firstName = firstName;

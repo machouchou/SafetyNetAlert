@@ -103,7 +103,7 @@ public class JSONPersonDAO implements IPersonDAO {
 	}
 
 	@Override
-	public boolean delete(final String lastName, final String firstName) {
+	public boolean delete(final String firstName, final String lastName) {
 		// Etape 1 : Trouver la personne à supprimer venant de la liste de database (nom
 		// + prenom)
 		List<Person> myList = this.getPersonList();

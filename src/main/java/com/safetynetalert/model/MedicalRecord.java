@@ -1,17 +1,18 @@
  package com.safetynetalert.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MedicalRecord {
+	public MedicalRecord() {
+		super();
+	}
 	private String firstName;
 	private String lastName;
 	private String birthDate;
 	private List<String> medications;
 	private List<String> allergies;
 	
-	public MedicalRecord() {
-		super();
-	}
 	/**
 	 * @param firstName
 	 * @param lastName
@@ -93,8 +94,21 @@ public class MedicalRecord {
 		return "MedicalRecord [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate
 				+ ", medications=" + medications + ", allergies=" + allergies + "]";
 	}
-	
-	
-	
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(allergies, birthDate, firstName, lastName, medications);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MedicalRecord other = (MedicalRecord) obj;
+		return Objects.equals(allergies, other.allergies) && Objects.equals(birthDate, other.birthDate)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(medications, other.medications);
+	}
 }

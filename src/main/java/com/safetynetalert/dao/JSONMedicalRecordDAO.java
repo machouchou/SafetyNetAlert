@@ -53,7 +53,14 @@ public class JSONMedicalRecordDAO implements IMedicalRecordDAO{
 
 	@Override
 	public boolean insert(final MedicalRecord medicalRecord) {
-		//logger.error("This {} already exists, insertion is impossible.", medicalRecord);
+		for (MedicalRecord existingMedicalRecord : getMedicalRecordList()) {
+			if (existingMedicalRecord.getFirstName().equalsIgnoreCase(medicalRecord.getFirstName()) 
+					&& existingMedicalRecord.getLastName().contentEquals(medicalRecord.getLastName())) {
+				logger.error("This {} already exists, insertion is impossible.", medicalRecord);
+				return false;
+			}
+		}
+		
 		return database.getlMedicalRecord().add(medicalRecord);
 	}
 
@@ -80,7 +87,7 @@ public class JSONMedicalRecordDAO implements IMedicalRecordDAO{
 	}
 
 	@Override
-	public boolean delete(String lastName, String firstName) {
+	public boolean delete(String firstName, String lastName) {
 		List<MedicalRecord> listMedicalRecord = this.getMedicalRecordList();
 		for (MedicalRecord existingMedicalRecord : listMedicalRecord) {
 			if (existingMedicalRecord.getFirstName().equalsIgnoreCase(firstName)

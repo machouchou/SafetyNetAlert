@@ -73,10 +73,10 @@ public class PersonServiceImpl implements IPersonService {
 	}
 
 	@Override
-	public boolean delete(String lastname, String firstname) {
-		logger.debug("delete(lastname : {}, firstname : {})", lastname, firstname);
+	public boolean delete(String firstName, String lastName) {
+		logger.debug("delete(firstName : {}, lastName : {})", firstName, lastName);
 		
-		return this.personDao.delete(lastname, firstname);
+		return this.personDao.delete(firstName, lastName);
 	}
 
 	@Override
@@ -98,12 +98,17 @@ public class PersonServiceImpl implements IPersonService {
 							person.getAddress(), person.getPhone());
 
 					// Convertir birthDate récupérée sous forme de string en objet de type Date
-					String birthDateAsString = person.getMedicalRecord().getBirthDate();
+					String birthDateAsString = null;
+					
+					if (person.getMedicalRecord() != null) {
+						birthDateAsString = person.getMedicalRecord().getBirthDate();
+					}
 
 					try {
-						int age = calculatePersonAge(birthDateAsString);
-
-						setMinorOrAdultNumber(listPersonDto, age);
+						if (birthDateAsString != null) {
+							int age = calculatePersonAge(birthDateAsString);
+							setMinorOrAdultNumber(listPersonDto, age);
+						}
 
 						listPersonDto.getListPersonDto().add(personDto);
 					} catch (ParseException e) {
@@ -143,7 +148,7 @@ public class PersonServiceImpl implements IPersonService {
 		return false;
 	}
 
-	private int calculatePersonAge(String birthDateAsString) throws ParseException {
+	public int calculatePersonAge(String birthDateAsString) throws ParseException {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Calendar birthDate = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		birthDate.setTime(formatter.parse(birthDateAsString));

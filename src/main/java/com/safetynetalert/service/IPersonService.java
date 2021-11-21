@@ -1,5 +1,6 @@
 package com.safetynetalert.service;
 
+import java.text.ParseException;
 import java.util.List;
 import com.safetynetalert.dto.FloodedPersonByAddressDto;
 import com.safetynetalert.dto.ListPersonDto;
@@ -16,7 +17,7 @@ public interface IPersonService {
 	
 	public boolean update(final Person person);
 	
-	public boolean delete(final String lastname, final String firstname);
+	public boolean delete(final String firstName, final String lastName);
 
 	public ListPersonDto getPersonsCoveredByStationNumber(final String stationNumber);
 
@@ -31,4 +32,6 @@ public interface IPersonService {
 	public List<PersonInfoDto> getPersonsInfo(String firstName, String lastName);
 
 	public List<String> getPersonsCommunityEmailByCity(String city);
+	
+	public int calculatePersonAge(String birthDateAsString) throws ParseException;
 }

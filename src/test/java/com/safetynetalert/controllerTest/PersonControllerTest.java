@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,16 +18,24 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.safetynetalert.dao.JSONPersonDAO;
+import com.safetynetalert.dto.ListPersonDto;
+import com.safetynetalert.dto.PersonDto;
+import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
 import com.safetynetalert.service.IPersonService;
+import com.safetynetalert.service.PersonServiceImpl;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
+
 public class PersonControllerTest {
 	
 	@Autowired
@@ -45,7 +54,7 @@ public class PersonControllerTest {
 	
 	@Test
 	@Tag("RetrievePersonList")
-	void getPersonLists() {
+	void getPersonLists() throws Exception {
 		// Arrange 
 		List<Person> lPerson = new ArrayList<>();
 		Person person = new Person("Aicha", "Kelani", "45 avenue", "City", "zip", "phone", "mail");
@@ -68,7 +77,7 @@ public class PersonControllerTest {
 	
 	@Test
 	@Tag("InsertPerson")
-	void insert_ValidPerson_InsertionSucceded() {
+	void insert_ValidPerson_InsertionSucceded() throws Exception {
 		try {
 			//Act
 			this.mvc.perform(MockMvcRequestBuilders
@@ -104,5 +113,46 @@ public class PersonControllerTest {
 		}
 	}
 	
+	@Test
+	@Tag("UpdatePerson")
+	void update_ValidPerson_UpdateSucceded() throws Exception {
+		try {
+			//Act
+			this.mvc.perform(MockMvcRequestBuilders
+					.put("/person")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{"
+							+ "\"firstName\": \"Warren\",\r\n"
+							+ "\"lastName\": \"Zemick\",\r\n"
+							+ "\"address\": \"1509 Culver St\",\r\n"
+							+ "\"city\": \"Culver\",\r\n"
+							+ "\"zip\": \"97451\",\r\n"
+							+ "\"phone\": \"841-874-7512\",\r\n"
+							+ "\"email\": \"jaboyd@email.com\"\r\n"
+							+ "}"))
+					.andExpect(status().isOk());			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	@Tag("DeletePerson")
+	void delete_ValidPerson_PersonIsDeleted() throws Exception {
+		try {
+			insert_ValidPerson_InsertionSucceded();
+			//Act
+			this.mvc.perform(MockMvcRequestBuilders
+					.delete("person")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"firstName\": \"Michel\",\"lastName\": \"Courvoisier\"}")
+					.accept(MediaType.APPLICATION_JSON))
+					.andDo(MockMvcResultHandlers.print())
+					.andExpect(status().isOk());			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
+	
 }

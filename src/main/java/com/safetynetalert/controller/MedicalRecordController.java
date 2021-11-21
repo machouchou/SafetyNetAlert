@@ -24,25 +24,25 @@ public class MedicalRecordController {
 	@Autowired
 	private IMedicalRecordService medicalRecordService;
 	
-	@GetMapping("medicalRecord")
+	@GetMapping("/medicalRecord")
 	public List<MedicalRecord> list() {
 		return this.medicalRecordService.list();
 		
 	}
 	
-	@PostMapping("medicalRecord")
+	@PostMapping("/medicalRecord")
 	public boolean insert(@RequestBody MedicalRecord medicalRecord) {
 		return this.medicalRecordService.insert(medicalRecord);
 	}
 	
-	@PutMapping("medicalRecord")
+	@PutMapping("/medicalRecord")
 	public boolean update(final MedicalRecord medicalRecord) {
 		return this.medicalRecordService.update(medicalRecord);
 	}
 	
-	@DeleteMapping("medicalRecord")
-	public boolean delete(@RequestParam final String lastName, @RequestParam final String firstName) {
-		return this.medicalRecordService.delete(lastName, firstName);
+	@DeleteMapping("/medicalRecord")
+	public boolean delete(@RequestParam final String firstName, @RequestParam final String lastName) {
+		return this.medicalRecordService.delete(firstName, lastName);
 	}
 
 }

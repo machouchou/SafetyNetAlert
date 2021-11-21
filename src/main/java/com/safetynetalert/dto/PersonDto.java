@@ -1,6 +1,10 @@
 package com.safetynetalert.dto;
 
 public class PersonDto {
+	public PersonDto() {
+		super();
+	}
+
 	private String firstName;
 	private String lastName;
 	private String address;

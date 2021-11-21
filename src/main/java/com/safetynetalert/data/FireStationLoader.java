@@ -31,7 +31,13 @@ public class FireStationLoader {
 				String station = arr.getJSONObject(j).getString("station");
 
 				FireStation fireStation = new FireStation(address, station);
-				lFireStation.add(fireStation);
+				boolean adressExists = lFireStation.stream().anyMatch(fireSt -> fireSt.getAddress().equals(address));
+				
+				if (!adressExists)
+				{
+					lFireStation.add(fireStation);
+				}
+				
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.toString());

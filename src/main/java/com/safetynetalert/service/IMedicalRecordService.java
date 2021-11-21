@@ -12,6 +12,6 @@ public interface IMedicalRecordService {
 
 	public boolean update(final MedicalRecord medicalRecord);
 
-	public boolean delete(final String lastname, final String firstname);
+	public boolean delete(final String firstname, final String lastname);
 
 }

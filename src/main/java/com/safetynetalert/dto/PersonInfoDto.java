@@ -1,8 +1,14 @@
 package com.safetynetalert.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PersonInfoDto {
+	public PersonInfoDto() {
+		super();
+	}
+
+
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -89,6 +95,29 @@ public class PersonInfoDto {
 	public void setAllergies(List<String> allergies) {
 		this.allergies = allergies;
 	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, age, allergies, email, firstName, lastName, medications);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PersonInfoDto other = (PersonInfoDto) obj;
+		return Objects.equals(address, other.address) && age == other.age && Objects.equals(allergies, other.allergies)
+				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(medications, other.medications);
+	}
+	
+	
 	
 	
 	
