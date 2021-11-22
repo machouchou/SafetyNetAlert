@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.dao.IPersonDAO;
 import com.safetynetalert.dao.JSONFireStationDAO;
 import com.safetynetalert.dao.JSONMedicalRecordDAO;
@@ -192,8 +191,6 @@ public class PersonServiceImpl implements IPersonService {
 			persons.addAll(personDao.getListPersonsByAddress(address));
 		}
 		for (Person person : persons) {
-			// phoneNumbersCoveredBySameStationNumber.add(person.getFirstName(); + " " +
-			// person.getLastName() + " : " + person.getPhone());
 			String phoneNumber = person.getPhone();
 
 			phoneNumbersCoveredBySameStationNumber.add(phoneNumber);
@@ -204,6 +201,8 @@ public class PersonServiceImpl implements IPersonService {
 
 	@Override
 	public List<PersonLivingAtAddressDto> getPersonsLivingAtAddress(String address) {
+		
+		address = address.trim();
 		
 		List<FireStation> fireStationsAddress = fireStationDao.getFireStationAddress(address);
 		
@@ -255,8 +254,7 @@ public class PersonServiceImpl implements IPersonService {
 		List<FloodedPersonByAddressDto> floodedPersonsByAddress = new ArrayList<>();
 		
 		for (String stationNumber : stationNumbers) {
-			List<String> addresses = new ArrayList<String>();
-					addresses= fireStationDao.getAddressesCoveredByAStationNumber(stationNumber);
+			List<String> addresses = fireStationDao.getAddressesCoveredByAStationNumber(stationNumber);
 			
 			for (String address : addresses) {
 				persons.addAll(personDao.getListPersonsByAddress(address));

@@ -36,7 +36,7 @@ public class MedicalRecordController {
 	}
 	
 	@PutMapping("/medicalRecord")
-	public boolean update(final MedicalRecord medicalRecord) {
+	public boolean update(@RequestBody final MedicalRecord medicalRecord) {
 		return this.medicalRecordService.update(medicalRecord);
 	}
 	

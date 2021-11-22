@@ -79,17 +79,14 @@ public class JSONPersonDAO implements IPersonDAO {
 		
 		
 		for (Person existingPerson : myList) {
-			if (person.getFirstName().equalsIgnoreCase("John")) {
+			/*if (person.getFirstName().equalsIgnoreCase("John")) {
 				System.out.println("Hello");
-			}
-			
+			}*/
+			// Etape 2 : Quand la personne est trouvée, modifier les valeur de la personne
+			// de la liste avec les valeurs qui sont dans la personne en paramètre de la
+			// méthode
 			if (existingPerson.getFirstName().equalsIgnoreCase(person.getFirstName())
 					&& existingPerson.getLastName().equalsIgnoreCase(person.getLastName())) {
-				// Etape 2 : Quand la personne est trouvée, modifier les valeur de la personne
-				// de la liste avec les valeurs qui sont dans la personne en paramètre de la
-				// méthode
-				//existingPerson.setFirstName(person.getFirstName());
-				//existingPerson.setLastName(person.getLastName());
 				existingPerson.setAddress(person.getAddress());
 				existingPerson.setCity(person.getCity());
 				existingPerson.setZip(person.getZip());

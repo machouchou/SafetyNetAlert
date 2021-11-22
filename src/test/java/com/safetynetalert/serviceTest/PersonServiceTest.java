@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.After;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -19,8 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.safetynetalert.dao.IPersonDAO;
 import com.safetynetalert.dto.ChildDto;
+import com.safetynetalert.dto.FloodedPersonByAddressDto;
 import com.safetynetalert.dto.ListPersonDto;
 import com.safetynetalert.dto.PersonDto;
 import com.safetynetalert.dto.PersonInfoDto;
@@ -40,11 +38,6 @@ public class PersonServiceTest {
 	@BeforeEach
 	public void config() {
 		lPerson = personService.list();	
-	}
-	
-	@AfterEach
-	public void clearList() {
-		lPerson = personService.list();
 	}
 	
 	@Test
@@ -99,19 +92,24 @@ public class PersonServiceTest {
 	}
 	
 	@Test
-	public void update_existingPerson_Personupdated() throws Exception {
+	public void update_existingPerson_PersonUpdated() throws Exception {
 		// Arrange
-		Person person = new Person("Tessa", "Carman", "8 Rue des Alizes",
+		
+		Person person = new Person("Ali", "Faty", "8 Rue des Alizes",
 				"Paris", "75010", "841-874-6512", "tenz@email.com" );
-			
+		personService.insert(person);
+		
+		person.setEmail("faty@email.com");
+		
 		// Act
 		Boolean isUpdated = personService.update(person);
 		
 		// Assert
+		
 		assertTrue(isUpdated);
 		Assertions.assertNotEquals(Collections.EMPTY_LIST, lPerson.size());
 		assertTrue(lPerson.stream().anyMatch(result -> person.getFirstName().equals(result.getFirstName()) &&
-				person.getLastName().equals(result.getLastName())));
+				person.getLastName().equals(result.getLastName()) && person.getEmail().equals("faty@email.com")));
 		
 	}
 	
@@ -238,36 +236,47 @@ public class PersonServiceTest {
 			
 		
 		// Assert
-		Assertions.assertNotEquals(Collections.EMPTY_LIST, lPersonsLivingAtAddressDto.add(personLivingAtAddressDto));
+		Assertions.assertNotEquals(Collections.EMPTY_LIST, lPersonsLivingAtAddressDto);
 		assertTrue(lPersonsLivingAtAddressDto.contains(personLivingAtAddressDto));
-		
+		assertEquals(5, lPersonsLivingAtAddressDto.size());
 		 
 	}
 	
-	/*@Test
+	@Test
 	@Tag("FloodedPersonByAddress")
 	void getFloodedPersonsByAddress_StationNumbers_floodedPersonsByAddress() throws Exception {
 		// Arrange
-		String address = "1509 Culver St ";
+		
+		String address; // = "1509 Culver St ";
+		List<String> stationNumbers = new ArrayList<>();
+		stationNumbers.add("1");
+		stationNumbers.add("2");
+		stationNumbers.add("3");
+		stationNumbers.add("4");
 		List<String> medication = new ArrayList<>();
+		medication.add("aznol:350mg");
+		medication.add("hydrapermazol:100mg");
 		List<String> allergy = new ArrayList<>();
-		int age = 4;
-		PersonLivingAtAddressDto personLivingAtAddressDto = new PersonLivingAtAddressDto();
-		personLivingAtAddressDto.setFirstName("Roger");
-		personLivingAtAddressDto.setLastName("Boyd");
-		personLivingAtAddressDto.setPhone("841-874-6512");
-		personLivingAtAddressDto.setStation("3");
-		personLivingAtAddressDto.setAge(age);
-		personLivingAtAddressDto.setMedications(medication);
-		personLivingAtAddressDto.setAllergies(allergy);
+		allergy.add("nillacilan");
+		int age = 37;
+		FloodedPersonByAddressDto floodedPersonByAddressDto = new FloodedPersonByAddressDto();
+		floodedPersonByAddressDto.setFirstName("John");
+		floodedPersonByAddressDto.setLastName("Boyd");
+		floodedPersonByAddressDto.setAddress("1509 Culver St");
+		floodedPersonByAddressDto.setPhone("841-874-6512");
+		floodedPersonByAddressDto.setAge(age);
+		floodedPersonByAddressDto.setMedications(medication);
+		floodedPersonByAddressDto.setAllergies(allergy);
+		
 		// Act
-		List<PersonLivingAtAddressDto> lPersonsLivingAtAddressDto = personService.getPersonsLivingAtAddress(address);
+		List<FloodedPersonByAddressDto> lFloodedPersonByAddressDto = personService.getFloodedPersonsByAddress(stationNumbers);
 			
 		
 		// Assert
-		Assertions.assertNotEquals(Collections.EMPTY_LIST, lPersonsLivingAtAddressDto.add(personLivingAtAddressDto));
-		assertTrue(lPersonsLivingAtAddressDto.contains(personLivingAtAddressDto));
-	}*/
+		Assertions.assertNotEquals(Collections.EMPTY_LIST, lFloodedPersonByAddressDto);
+		assertTrue(lFloodedPersonByAddressDto.contains(floodedPersonByAddressDto));
+		assertEquals(23, lFloodedPersonByAddressDto.size());
+	}
 	
 	@Test
 	@Tag("PersonsInfo")
