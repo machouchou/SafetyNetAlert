@@ -1,9 +1,7 @@
 package com.safetynetalert.data;
 
 import java.util.List;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Value;
 import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.MedicalRecord;
 import com.safetynetalert.model.Person;

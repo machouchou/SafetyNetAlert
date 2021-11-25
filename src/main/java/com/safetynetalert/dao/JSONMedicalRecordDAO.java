@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.data.Database;
 import com.safetynetalert.model.MedicalRecord;
 
@@ -34,8 +33,6 @@ public class JSONMedicalRecordDAO implements IMedicalRecordDAO{
 	
 	@Override
 	public MedicalRecord getMedicalRecordBasedOnFirstAndLastName(String firstName, String lastName) {
-		
-		List<MedicalRecord> lMR = database.getlMedicalRecord();
 		return database.getlMedicalRecord()
 				.stream()
 				.filter(medicalRecord -> medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName))

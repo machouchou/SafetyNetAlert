@@ -2,6 +2,7 @@ package com.safetynetalert.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListPersonDto {
 	private List<PersonDto> personsDto;
@@ -47,4 +48,22 @@ public class ListPersonDto {
 	public void setNbChildren(int nbChildren) {
 		this.nbChildren = nbChildren;
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(nbAdults, nbChildren, personsDto);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ListPersonDto other = (ListPersonDto) obj;
+		return nbAdults == other.nbAdults && nbChildren == other.nbChildren
+				&& Objects.equals(personsDto, other.personsDto);
+	}
+	
+	
 }

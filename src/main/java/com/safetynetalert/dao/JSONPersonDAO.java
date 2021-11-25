@@ -8,9 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.data.Database;
-import com.safetynetalert.model.FireStation;
 import com.safetynetalert.model.Person;
 
 @Repository

@@ -2,6 +2,7 @@ package com.safetynetalert.serviceTest;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.safetynetalert.dao.JSONFireStationDAO;
+
 import com.safetynetalert.model.FireStation;
 import com.safetynetalert.service.IFireStationService;
 
@@ -21,9 +22,6 @@ public class FireStationServiceTest {
 	IFireStationService fireStationService;
 	
 	List<FireStation> lFireStation;
-	
-	@Autowired
-	JSONFireStationDAO dao ;
 	
 	@BeforeEach
 	public void config() {

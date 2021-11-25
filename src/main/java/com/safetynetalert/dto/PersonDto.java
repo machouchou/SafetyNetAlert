@@ -1,5 +1,7 @@
 package com.safetynetalert.dto;
 
+import java.util.Objects;
+
 public class PersonDto {
 	public PersonDto() {
 		super();
@@ -79,5 +81,8 @@ public class PersonDto {
 		return "PersonDto [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", phone="
 				+ phone + "]";
 	}
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, firstName, lastName, phone);
+	}
 }

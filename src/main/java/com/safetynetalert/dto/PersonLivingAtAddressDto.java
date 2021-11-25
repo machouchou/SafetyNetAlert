@@ -4,26 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class PersonLivingAtAddressDto {
-	@Override
-	public int hashCode() {
-		return Objects.hash(age, allergies, firstName, lastName, medications, phone, station);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PersonLivingAtAddressDto other = (PersonLivingAtAddressDto) obj;
-		return age == other.age && Objects.equals(allergies, other.allergies)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
-				&& Objects.equals(medications, other.medications) && Objects.equals(phone, other.phone)
-				&& Objects.equals(station, other.station);
-	}
-
 	private String firstName;
 	private String lastName;
 	private String phone;
@@ -88,5 +68,23 @@ public class PersonLivingAtAddressDto {
 		this.age = age;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(age, firstName, lastName, phone, station);
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PersonLivingAtAddressDto other = (PersonLivingAtAddressDto) obj;
+		return age == other.age 
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(phone, other.phone)
+				&& Objects.equals(station, other.station);
+	}
 }

@@ -2,6 +2,7 @@ package com.safetynetalert.serviceTest;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.safetynetalert.dao.JSONMedicalRecordDAO;
+
 import com.safetynetalert.model.MedicalRecord;
 import com.safetynetalert.service.IMedicalRecordService;
 
@@ -21,9 +22,6 @@ public class MedicalRecordServiceTest {
 	@Autowired
 	IMedicalRecordService medicalRecordService;
 	List<MedicalRecord> lMedicalRecords;
-	
-	@Autowired
-	JSONMedicalRecordDAO dao;
 	
 	@BeforeEach
 	public void config() {
@@ -78,7 +76,7 @@ public class MedicalRecordServiceTest {
 		// Assert
 		assertFalse(isInserted);
 		Assertions.assertNotEquals(Collections.EMPTY_LIST, lMedicalRecords);
-		//assertTrue(lMedicalRecords.contains(medicalRecord));
+		assertTrue(lMedicalRecords.contains(medicalRecord));
 		
 	}
 	
@@ -117,7 +115,7 @@ public class MedicalRecordServiceTest {
 		// Assert
 		assertTrue(isDeleted);
 		Assertions.assertNotEquals(Collections.EMPTY_LIST, lMedicalRecords);
-		assertFalse(lMedicalRecords.contains(medicalRecordService));
+		assertFalse(lMedicalRecords.contains(medicalRecord));
 	}
 }
 

@@ -1,6 +1,7 @@
 package com.safetynetalert.controller;
 
 import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,12 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.safetynetalert.config.AppConfig;
 import com.safetynetalert.model.FireStation;
-import com.safetynetalert.model.Person;
 import com.safetynetalert.service.IFireStationService;
 
 @RestController

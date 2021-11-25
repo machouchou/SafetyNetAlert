@@ -6,8 +6,8 @@ public class OtherPersonDto {
 	
 	public OtherPersonDto(String firstName, String lastName) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
 	}
 
 	public String getFirstName() {
@@ -25,6 +25,4 @@ public class OtherPersonDto {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-
 }

@@ -1,6 +1,7 @@
 package com.safetynetalert.controller;
 
 import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;

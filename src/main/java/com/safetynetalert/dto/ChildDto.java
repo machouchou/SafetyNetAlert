@@ -1,5 +1,7 @@
 package com.safetynetalert.dto;
 
+import java.util.Objects;
+
 public class ChildDto {
 	private String firstName;
 	private String lastName;

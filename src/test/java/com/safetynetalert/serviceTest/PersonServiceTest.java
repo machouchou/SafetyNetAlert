@@ -3,6 +3,8 @@ package com.safetynetalert.serviceTest;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -148,7 +150,7 @@ public class PersonServiceTest {
 			
 		
 		// Assert
-		Assertions.assertNotEquals(Collections.EMPTY_LIST, lPersonDto.getListPersonDto());
+		assertNotEquals(0, lPersonDto.getListPersonDto().size());
 		assertTrue(lPersonDto.getListPersonDto()
 				.stream()
 				.anyMatch(person -> person.getFirstName().equalsIgnoreCase(personDto.getFirstName()) &&
@@ -184,15 +186,15 @@ public class PersonServiceTest {
 		childDto.setAge(personService.calculatePersonAge("03/06/2017"));
 		
 		// Act
-		PersonsAtAddressDto lchildrenLivingAtAddressDto = personService.getChildrenLivingAtAddress(address);			
+		PersonsAtAddressDto personsAtSameAddress = personService.getChildrenLivingAtAddress(address);			
 		
 		// Assert
-		Assertions.assertNotEquals(Collections.EMPTY_LIST, lchildrenLivingAtAddressDto);
-		/*assertTrue(lchildrenLivingAtAddressDto
+		Assertions.assertNotEquals(Collections.EMPTY_LIST, personsAtSameAddress);
+		assertTrue(personsAtSameAddress.getListChildren()
 				.stream()
 				.anyMatch(person -> person.getFirstName().equalsIgnoreCase(childDto.getFirstName()) &&
 						person.getLastName().equals(childDto.getLastName()) 
-						&& person.getAge().equals(childDto.getAge())));*/
+						&& person.getAge() == childDto.getAge()));
 		assertEquals(4, childDto.getAge());
 		
 	}
@@ -202,8 +204,6 @@ public class PersonServiceTest {
 	void getPersonsPhoneNumberByStation_StationNumber_ListOfPhoneNumbers() throws Exception {
 		// Arrange
 		String stationNumber = "3";
-		Person person = new Person();
-		person.setPhone("841-874-8547");
 		
 		// Act
 		List<String> lPhone = personService.getPersonsPhoneNumberByStation(stationNumber);
@@ -244,10 +244,9 @@ public class PersonServiceTest {
 	
 	@Test
 	@Tag("FloodedPersonByAddress")
-	void getFloodedPersonsByAddress_StationNumbers_floodedPersonsByAddress() throws Exception {
+	void getFloodedPersonsByAddress_GivenStationNumbers_ReturnsFloodedPersonsByAddress() throws Exception {
 		// Arrange
 		
-		String address; // = "1509 Culver St ";
 		List<String> stationNumbers = new ArrayList<>();
 		stationNumbers.add("1");
 		stationNumbers.add("2");
