@@ -81,9 +81,6 @@ public class PersonServiceTest {
 		// Arrange
 		Person person = new Person("Elsa", "Pichereau", "1511 Culver St",
 				"Paris", "75017", "0603037826", "elpiche@gmail.com" );
-			
-		// Act
-		personService.insert(person);
 		
 		// Act
 		Boolean isInserted = personService.insert(person);
